@@ -72,7 +72,7 @@ client.on(`messageCreate`, (message) => {
       //console.log('your social credit is ' + (row.score+1).toString());
     }
     if (command === "socialcreditall") {
-      query = `SELECT * FROM data ORDER BY score DESC`;
+      query = `SELECT username, score FROM data ORDER BY score DESC`;
       db.all(query, [], (err, rows) => {
         if (err) {
           throw err;
@@ -85,6 +85,10 @@ client.on(`messageCreate`, (message) => {
           );
           leaderboard += usernameCut + ": " + row.score + "\n";
         });
+        leaderboard = leaderboard.substring(
+          leaderboard.indexOf("undefined"),
+          leaderboard.length
+        );
         message.channel.send(leaderboard);
         console.log(leaderboard);
       });
