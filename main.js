@@ -7,7 +7,7 @@ const client = new Discord.Client({
 });
 const sqlite = require("sqlite3").verbose();
 
-const prefix = "!";
+const prefix = "-";
 
 const fs = require("fs");
 const sqlite3 = require("sqlite3");
@@ -77,7 +77,7 @@ client.on(`messageCreate`, (message) => {
         if (err) {
           throw err;
         }
-        let leaderboard;
+        let leaderboard = "";
         rows.forEach((row) => {
           let usernameCut = row.username.substring(
             0,
@@ -90,7 +90,7 @@ client.on(`messageCreate`, (message) => {
           leaderboard.length
         );
         message.channel.send(leaderboard);
-        console.log(leaderboard);
+        //console.log(leaderboard);
       });
       db.close();
     }
@@ -108,6 +108,8 @@ client.on("messageCreate", (message) => {
     client.command.get("bing").excecute(message, args);
   } else if (command === "describe") {
     client.command.get("describe").excecute(message, args);
+  } else if (command === "describenoun") {
+    client.command.get("describenoun").excecute(message, args);
   }
   //else if(command === 'socialcredit'){
   //     client.command.get('socialcredit').excecute(message,args);
