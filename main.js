@@ -6,11 +6,10 @@ const client = new Discord.Client({
   intents: [Discord.Intents.FLAGS.GUILDS, Discord.Intents.FLAGS.GUILD_MESSAGES],
 });
 const sqlite = require("sqlite3").verbose();
-
-const prefix = "-";
-
 const fs = require("fs");
 const sqlite3 = require("sqlite3");
+
+const prefix = "-";
 
 client.command = new Discord.Collection();
 
@@ -71,7 +70,7 @@ client.on(`messageCreate`, (message) => {
       );
       //console.log('your social credit is ' + (row.score+1).toString());
     }
-    if (command === "socialcreditall") {
+    if (command === "leaderboard") {
       query = `SELECT username, score FROM data ORDER BY score DESC`;
       db.all(query, [], (err, rows) => {
         if (err) {
@@ -85,10 +84,6 @@ client.on(`messageCreate`, (message) => {
           );
           leaderboard += usernameCut + ": " + row.score + "\n";
         });
-        leaderboard = leaderboard.substring(
-          leaderboard.indexOf("undefined"),
-          leaderboard.length
-        );
         message.channel.send(leaderboard);
         //console.log(leaderboard);
       });
@@ -106,6 +101,8 @@ client.on("messageCreate", (message) => {
 
   if (command === "bing") {
     client.command.get("bing").excecute(message, args);
+  } else if (command === "help") {
+    client.command.get("help").excecute(message, args, client.command);
   } else if (command === "describe") {
     client.command.get("describe").excecute(message, args);
   } else if (command === "describenoun") {

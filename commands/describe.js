@@ -1,6 +1,6 @@
 module.exports = {
   name: "describe",
-  description: "describe",
+  description: "Describe someone or something with this command",
   excecute(message, args) {
     const request = require("request");
     const cheerio = require("cheerio");
