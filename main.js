@@ -60,15 +60,23 @@ client.on(`messageCreate`, (message) => {
         row.score + 1,
         userid,
       ]);
+      //db.close();
     }
     const args = message.content.slice(prefix.length).split(/ +/);
     const command = args.shift().toLowerCase();
     if (command === "socialcredit") {
-      message.channel.send(
-        "BING CHILLING! Your social credit score is " +
-          (row.score + 1).toString()
-      );
-      //console.log('your social credit is ' + (row.score+1).toString());
+      query = `SELECT * FROM data WHERE userid = ?`;
+      db.get(query, [userid], (err) => {
+        if (err) {
+          throw err;
+        }
+        message.channel.send(
+          "BING CHILLING! Your social credit score is " +
+            (row.score + 1).toString()
+        );
+        //console.log('your social credit is ' + (row.score+1).toString());
+      });
+      db.close();
     }
     if (command === "leaderboard") {
       query = `SELECT username, score FROM data ORDER BY score DESC`;
@@ -86,8 +94,8 @@ client.on(`messageCreate`, (message) => {
         });
         message.channel.send(leaderboard);
         //console.log(leaderboard);
+        db.close();
       });
-      db.close();
     }
   });
 });
