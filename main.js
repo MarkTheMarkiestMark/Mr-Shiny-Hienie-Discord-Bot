@@ -77,8 +77,7 @@ client.on(`messageCreate`, (message) => {
         //console.log('your social credit is ' + (row.score+1).toString());
       });
       db.close();
-    }
-    if (command === "leaderboard") {
+    } else if (command === "leaderboard") {
       query = `SELECT username, score FROM data ORDER BY score DESC`;
       db.all(query, [], (err, rows) => {
         if (err) {
@@ -96,6 +95,19 @@ client.on(`messageCreate`, (message) => {
         //console.log(leaderboard);
         db.close();
       });
+    } else if (command === "transfer") {
+      const mention = message.mentions.users.first();
+
+      query = `SELECT * FROM data WHERE userid = ?`;
+      db.get(query, [mention], (err) => {
+        if (err) {
+          throw err;
+        }
+        //console.log('your social credit is ' + (row.score+1).toString());
+      });
+      if (!args.length) {
+        message.channel.send("No arguments!");
+      }
     }
   });
 });
@@ -115,6 +127,8 @@ client.on("messageCreate", (message) => {
     client.command.get("describe").excecute(message, args);
   } else if (command === "describenoun") {
     client.command.get("describenoun").excecute(message, args);
+  } else if (command === "explain") {
+    client.command.get("explain").excecute(message, args);
   }
   //else if(command === 'socialcredit'){
   //     client.command.get('socialcredit').excecute(message,args);
