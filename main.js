@@ -44,6 +44,7 @@ client.on(`messageCreate`, (message) => {
 
   let query = `SELECT * FROM data WHERE userid = ?`;
   db.get(query, [userid], (err, row) => {
+    message.channel.sendTyping();
     if (err) {
       console.log(err);
       return;

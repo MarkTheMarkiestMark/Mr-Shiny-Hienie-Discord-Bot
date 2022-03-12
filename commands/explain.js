@@ -5,11 +5,8 @@ module.exports = {
     const request = require("request");
     const cheerio = require("cheerio");
     const gingerbread = require("gingerbread");
-    let fullarg = "";
+    const fullarg = args.join(" ");
     message.channel.sendTyping();
-    for (var i = 0; i < args.length; i++) {
-      fullarg += args[i] + " ";
-    }
     request("https://randomword.com/adjective", (error, response, html) => {
       if (!error && response.statusCode == 200) {
         const $ = cheerio.load(html);
