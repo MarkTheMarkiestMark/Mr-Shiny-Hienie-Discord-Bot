@@ -4,6 +4,7 @@ module.exports = {
   excecute(message, args) {
     const request = require("request");
     const cheerio = require("cheerio");
+    const gingerbread = require("gingerbread");
     let fullarg = "";
     for (var i = 0; i < args.length; i++) {
       fullarg += args[i] + " ";
@@ -13,8 +14,14 @@ module.exports = {
         const $ = cheerio.load(html);
         let adjective = $(`#random_word`).html();
         //console.log(adjective);
-        if (!args.length) message.channel.send(`You are ${adjective}`);
-        else message.channel.send(`${fullarg}is ${adjective}`);
+        let answer = "";
+
+        if (!args.length) answer = `You are ${adjective}`;
+        else answer = `${fullarg}is ${adjective}`;
+
+        gingerbread(answer, function (error, text, result, corrections) {
+          message.channel.send(result);
+        });
       }
     });
   },
