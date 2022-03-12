@@ -34,9 +34,12 @@ module.exports = {
                 else
                   answer = `${fullarg.toLowerCase()}is ${adjective} because of ${noun2}`;
 
-                gingerbread(answer, function (text, result, corrections) {
-                  message.channel.send(result);
-                });
+                gingerbread(
+                  answer,
+                  function (error, text, result, corrections) {
+                    message.channel.send(result);
+                  }
+                );
               }
             });
           }
