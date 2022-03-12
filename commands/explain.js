@@ -29,7 +29,7 @@ module.exports = {
                 if (!args.length)
                   answer = `${noun} is ${adjective} because of ${noun2}`;
                 else
-                  answer = `${fullarg.toLowerCase()}is ${adjective} because of ${noun2}`;
+                  answer = `${fullarg.toLowerCase()} is ${adjective} because of ${noun2}`;
 
                 gingerbread(
                   answer,
