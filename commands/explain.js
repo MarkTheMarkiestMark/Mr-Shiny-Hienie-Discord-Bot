@@ -31,14 +31,12 @@ module.exports = {
                 let answer = "";
                 if (!args.length)
                   answer = `${noun} is ${adjective} because of ${noun2}`;
-                else answer = `${fullarg}is ${adjective} because of ${noun2}`;
+                else
+                  answer = `${fullarg.toLowerCase()}is ${adjective} because of ${noun2}`;
 
-                gingerbread(
-                  answer,
-                  function (error, text, result, corrections) {
-                    message.channel.send(result);
-                  }
-                );
+                gingerbread(answer, function (text, result, corrections) {
+                  message.channel.send(result);
+                });
               }
             });
           }

@@ -17,7 +17,7 @@ module.exports = {
         let answer = "";
 
         if (!args.length) answer = `You are ${adjective}`;
-        else answer = `${fullarg}is ${adjective}`;
+        else answer = `${fullarg.toLowerCase()}is ${adjective}`;
 
         gingerbread(answer, function (error, text, result, corrections) {
           message.channel.send(result);

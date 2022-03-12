@@ -26,7 +26,7 @@ module.exports = {
             let answer = "";
             //for some reason it wouldn't send anything if message.channel.send was outside a request ¯\_(ツ)_/¯
             if (!args.length) answer = `You are a ${adjnoun}`;
-            else answer = `${fullarg}is a ${adjnoun}`;
+            else answer = `${fullarg.toLowerCase()}is a ${adjnoun}`;
 
             gingerbread(answer, function (error, text, result, corrections) {
               message.channel.send(result);
