@@ -4,6 +4,7 @@ module.exports = {
   excecute(message, args) {
     const request = require("request");
     const cheerio = require("cheerio");
+    const gingerbread = require("gingerbread");
     let fullarg = "";
     message.channel.sendTyping();
     for (var i = 0; i < args.length; i++) {
@@ -26,14 +27,18 @@ module.exports = {
                 let noun2 = $(`#random_word`).html();
                 //console.log(noun);
                 //for some reason it wouldn't send anything if message.channel.send was outside a request ¯\_(ツ)_/¯
+
+                let answer = "";
                 if (!args.length)
-                  message.channel.send(
-                    `${noun} is ${adjective} because of ${noun2}`
-                  );
-                else
-                  message.channel.send(
-                    `${fullarg}is ${adjective} because of ${noun2}`
-                  );
+                  answer = `${noun} is ${adjective} because of ${noun2}`;
+                else answer = `${fullarg}is ${adjective} because of ${noun2}`;
+
+                gingerbread(
+                  answer,
+                  function (error, text, result, corrections) {
+                    message.channel.send(result);
+                  }
+                );
               }
             });
           }
