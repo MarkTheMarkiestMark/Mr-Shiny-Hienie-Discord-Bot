@@ -41,7 +41,7 @@ client.on(`messageCreate`, (message) => {
     uwu = true;
     setTimeout(function () {
       uwu = false;
-    }, 1000 * 10); //1000 milliseconds times 300 meaning 300 seconds hence, 5 minutes
+    }, 1000 * 300); //1000 milliseconds times 300 meaning 300 seconds hence, 5 minutes
   }
 });
 const getUwU = () => {
