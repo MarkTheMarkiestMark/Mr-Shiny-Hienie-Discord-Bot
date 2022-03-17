@@ -25,10 +25,8 @@ for (const file of commandFiles) {
 
 client.once("ready", () => {
   console.log("Mr. Shiny Pants is Online");
-  console.log(module.exports.UwU);
 });
 client.on(`ready`, () => {
-  console.log("online");
   let db = new sqlite.Database(
     "./socialcredit.db",
     sqlite.OPEN_READWRITE | sqlite.OPEN_CREATE
@@ -39,12 +37,11 @@ client.on(`ready`, () => {
 });
 
 client.on(`messageCreate`, (message) => {
-  console.log(uwu);
   if (message.content.toLowerCase().includes("jackson") && !uwu) {
     uwu = true;
     setTimeout(function () {
       uwu = false;
-    }, 1000 * 300); //1000 milliseconds times 300 meaning 300 seconds hence, 5 minutes
+    }, 1000 * 10); //1000 milliseconds times 300 meaning 300 seconds hence, 5 minutes
   }
 });
 const getUwU = () => {

@@ -2,6 +2,7 @@ module.exports = {
   name: "describenoun",
   description: "Describe someone or something with a noun!",
   excecute(message, args) {
+    const owoify = require("owoify-js").default;
     const request = require("request");
     const cheerio = require("cheerio");
     const gingerbread = require("gingerbread");
@@ -27,7 +28,12 @@ module.exports = {
             else answer = `${fullarg.toLowerCase()} is a ${adjnoun}`;
 
             gingerbread(answer, function (error, text, result, corrections) {
-              message.channel.send(result);
+              if (require(`../main`).getUwU()) {
+                message.channel.send(owoify(result));
+                console.log("UwU is enabled");
+              } else {
+                message.channel.send(result);
+              }
             });
           }
         });

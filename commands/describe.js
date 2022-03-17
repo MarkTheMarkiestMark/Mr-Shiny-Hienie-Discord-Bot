@@ -24,7 +24,6 @@ module.exports = {
             console.log("UwU is enabled");
           } else {
             message.channel.send(result);
-            console.log("UwU is disabled");
           }
         });
       }
