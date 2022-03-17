@@ -7,7 +7,7 @@ module.exports = {
       commandList += "`-" + command.name + "`  " + command.description + "\n";
     });
     commandList +=
-      "`-socialcredit`  Display your social credit \n `-leaderboard`  See the social credit leaderboard";
+      "`-socialcredit`  Display your social credit \n`-leaderboard`  See the social credit leaderboard";
     message.channel.send(commandList);
   },
 };
