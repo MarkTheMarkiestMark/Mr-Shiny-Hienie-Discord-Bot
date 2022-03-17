@@ -8,6 +8,7 @@ const client = new Discord.Client({
 const sqlite = require("sqlite3").verbose();
 const fs = require("fs");
 const sqlite3 = require("sqlite3");
+let uwu = false;
 
 const prefix = "-";
 
@@ -24,6 +25,7 @@ for (const file of commandFiles) {
 
 client.once("ready", () => {
   console.log("Mr. Shiny Pants is Online");
+  console.log(module.exports.UwU);
 });
 client.on(`ready`, () => {
   console.log("online");
@@ -35,6 +37,20 @@ client.on(`ready`, () => {
     `CREATE TABLE IF NOT EXISTS data(userid INTEGER NOT NULL, username TEXT NOT NULL, score INTEGER)`
   );
 });
+
+client.on(`messageCreate`, (message) => {
+  console.log(uwu);
+  if (message.content.toLowerCase().includes("jackson") && !uwu) {
+    uwu = true;
+    setTimeout(function () {
+      uwu = false;
+    }, 1000 * 300); //1000 milliseconds times 300 meaning 300 seconds hence, 5 minutes
+  }
+});
+const getUwU = () => {
+  return uwu;
+};
+
 client.on(`messageCreate`, (message) => {
   let msg = message.content.toLowerCase();
   let userid = message.author.id;
@@ -103,7 +119,6 @@ client.on(`messageCreate`, (message) => {
         if (err) {
           throw err;
         }
-        //console.log('your social credit is ' + (row.score+1).toString());
       });
       if (!args.length) {
         message.channel.send("No arguments!");
@@ -134,5 +149,7 @@ client.on("messageCreate", (message) => {
   //     client.command.get('socialcredit').excecute(message,args);
   // }
 });
-
+module.exports = {
+  getUwU,
+};
 client.login(process.env.BOT_TOKEN);

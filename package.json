@@ -13,9 +13,11 @@
     "discord.js": "^13.6.0",
     "dotenv": "^16.0.0",
     "gingerbread": "^0.6.0",
+    "owoify-js": "^1.0.7",
     "request": "^2.88.2",
     "sequelize": "^6.17.0",
     "sqlite3": "^5.0.0",
+    "unique-names-generator": "^4.7.1",
     "ytdl-core": "^4.11.0"
   }
 }
