@@ -1,6 +1,7 @@
 module.exports = {
   name: "help",
   description: "Help me",
+  enabled: true,
   excecute(message, args, commands) {
     let commandList = "";
     commands.forEach((command) => {

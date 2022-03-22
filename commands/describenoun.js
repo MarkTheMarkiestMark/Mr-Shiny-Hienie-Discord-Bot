@@ -1,6 +1,7 @@
 module.exports = {
   name: "describenoun",
   description: "Describe someone or something with a noun!",
+  enabled: true,
   excecute(message, args) {
     const owoify = require("owoify-js").default;
     const request = require("request");
@@ -8,7 +9,7 @@ module.exports = {
     const gingerbread = require("gingerbread");
     let adjnoun = "";
     const fullarg = args.join(" ");
-    message.channel.sendTyping();
+    message.channel.startTyping();
     request("https://randomword.com/adjective", (error, response, html) => {
       if (!error && response.statusCode == 200) {
         const $ = cheerio.load(html);
@@ -39,5 +40,6 @@ module.exports = {
         });
       }
     });
+    message.channel.stopTyping();
   },
 };

@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { channel } = require("diagnostics_channel");
+//declaring variables
 const Discord = require("discord.js");
 
 const client = new Discord.Client({
@@ -12,21 +12,24 @@ let uwu = false;
 
 const prefix = "-";
 
-client.command = new Discord.Collection();
+client.commands = new Discord.Collection();
 
 const commandFiles = fs
   .readdirSync("./commands")
   .filter((file) => file.endsWith(".js"));
+
+//loop through all commands
 for (const file of commandFiles) {
   const command = require(`./commands/${file}`);
-
-  client.command.set(command.name, command);
+  //skip command if its disabled
+  if (!command.enabled) continue;
+  client.commands.set(command.name, command);
 }
 
 client.once("ready", () => {
+  //check if he's alive
   console.log("Mr. Shiny Pants is Online");
-});
-client.on(`ready`, () => {
+  //create new database
   let db = new sqlite.Database(
     "./socialcredit.db",
     sqlite.OPEN_READWRITE | sqlite.OPEN_CREATE
@@ -35,68 +38,78 @@ client.on(`ready`, () => {
     `CREATE TABLE IF NOT EXISTS data(userid INTEGER NOT NULL, username TEXT NOT NULL, score INTEGER)`
   );
 });
-
-client.on(`messageCreate`, (message) => {
+//uwu shit
+client.on(`message`, (message) => {
   if (message.content.toLowerCase().includes("jackson") && !uwu) {
     uwu = true;
     setTimeout(function () {
       uwu = false;
-    }, 1000 * 300); //1000 milliseconds times 300 meaning 300 seconds hence, 5 minutes
+    }, 1000 * 300); //sets timer for five minutes
   }
 });
 const getUwU = () => {
   return uwu;
 };
 
-client.on(`messageCreate`, (message) => {
+//SOCIAL CREDIT
+client.on(`message`, (message) => {
+  //declaring variables
   let msg = message.content.toLowerCase();
-  let userid = message.author.id;
-  let uname = message.author.tag;
-  if (message.author.bot) return;
+  let userid = message.author.id; //discord id
+  let uname = message.author.tag; //username
+  if (message.author.bot) return; //ignore messages from bots
+  //store database in a variable
   let db = new sqlite.Database("./socialcredit.db", sqlite.OPEN_READWRITE);
-
+  //select everything that matches the user's userid
   let query = `SELECT * FROM data WHERE userid = ?`;
   db.get(query, [userid], (err, row) => {
     if (err) {
       console.log(err);
       return;
     }
+    //check if the data doesn't exist
     if (row === undefined) {
+      //insert the appropriate data into the database
       let insertdata = db.prepare(`INSERT INTO data VALUES(?,?,?)`);
       insertdata.run(userid, uname, 0);
-      //let score = row.score;
       insertdata.finalize();
       db.close();
       return;
     } else {
+      //update the user's social credit when they send a message
       db.run(`UPDATE data SET score = ? WHERE userid = ?`, [
         row.score + 1,
         userid,
       ]);
-      //db.close();
     }
+    //command handling
+    //MOVE TO SEPERATE COMMANDS
     const args = message.content.slice(prefix.length).split(/ +/);
     const command = args.shift().toLowerCase();
     if (command === "socialcredit") {
+      //get the data from the db
       query = `SELECT * FROM data WHERE userid = ?`;
       db.get(query, [userid], (err) => {
         if (err) {
           throw err;
         }
+        //send their social credit score
         message.channel.send(
           "BING CHILLING! Your social credit score is " +
             (row.score + 1).toString()
         );
-        //console.log('your social credit is ' + (row.score+1).toString());
       });
       db.close();
     } else if (command === "leaderboard") {
+      //select select the user name and socialcredit score and sort by descending order
       query = `SELECT username, score FROM data ORDER BY score DESC`;
       db.all(query, [], (err, rows) => {
         if (err) {
           throw err;
         }
         let leaderboard = "";
+        //cut the username number from string
+        //example: MrShinyHienie#2342 ==> MrShinyHienie
         rows.forEach((row) => {
           let usernameCut = row.username.substring(
             0,
@@ -105,10 +118,11 @@ client.on(`messageCreate`, (message) => {
           leaderboard += usernameCut + ": " + row.score + "\n";
         });
         message.channel.send(leaderboard);
-        //console.log(leaderboard);
         db.close();
       });
-    } else if (command === "transfer") {
+    }
+    //AIN'T FINISHED YET
+    else if (command === "transfer") {
       const mention = message.mentions.users.first();
 
       query = `SELECT * FROM data WHERE userid = ?`;
@@ -124,27 +138,23 @@ client.on(`messageCreate`, (message) => {
   });
 });
 
-client.on("messageCreate", (message) => {
-  message.member.roles.cache;
+client.on("message", (message) => {
+  //ignore messages that are sent by bots or missing the prefix -
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 
   const args = message.content.slice(prefix.length).split(/ +/);
   const command = args.shift().toLowerCase();
 
-  if (command === "bing") {
-    client.command.get("bing").excecute(message, args);
-  } else if (command === "help") {
-    client.command.get("help").excecute(message, args, client.command);
-  } else if (command === "describe") {
-    client.command.get("describe").excecute(message, args);
-  } else if (command === "describenoun") {
-    client.command.get("describenoun").excecute(message, args);
-  } else if (command === "explain") {
-    client.command.get("explain").excecute(message, args);
+  //exits method if the command isn't valid
+  if (!client.commands.has(command)) return;
+  //try and run the command
+  try {
+    client.commands.get(command).excecute(message, args, client.commands, uwu);
+  } catch (error) {
+    //print an error message if there was an error
+    console.log(error);
+    message.reply("Command's Got an Error :(");
   }
-  //else if(command === 'socialcredit'){
-  //     client.command.get('socialcredit').excecute(message,args);
-  // }
 });
 module.exports = {
   getUwU,

@@ -1,13 +1,14 @@
 module.exports = {
   name: "explain",
   description: "Explain someone or something!",
+  enabled: true,
   excecute(message, args) {
     const owoify = require("owoify-js").default;
     const request = require("request");
     const cheerio = require("cheerio");
     const gingerbread = require("gingerbread");
     const fullarg = args.join(" ");
-    message.channel.sendTyping();
+    message.channel.startTyping();
     request("https://randomword.com/adjective", (error, response, html) => {
       if (!error && response.statusCode == 200) {
         const $ = cheerio.load(html);
@@ -49,5 +50,6 @@ module.exports = {
         });
       }
     });
+    message.channel.stopTyping();
   },
 };
