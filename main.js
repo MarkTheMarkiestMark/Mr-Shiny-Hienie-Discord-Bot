@@ -40,7 +40,10 @@ client.once("ready", () => {
 });
 //uwu shit
 client.on(`message`, (message) => {
-  if (message.content.toLowerCase().includes("jackson") && !uwu) {
+  if (
+    message.content.toLowerCase().includes("jackson") ||
+    (message.content.toLowerCase().includes("kitty") && !uwu)
+  ) {
     uwu = true;
     setTimeout(function () {
       uwu = false;
