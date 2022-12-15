@@ -25,10 +25,10 @@ module.exports = {
             else answer = `I dare ${fullarg.toLowerCase()} to ${verb} ${noun}`;
             console.log(answer);
             if (require(`../main`).getUwU()) {
-              message.channel.send(owoify(result));
+              message.channel.send(owoify(answer));
               console.log("UwU is enabled");
             } else {
-              message.channel.send(result);
+              message.channel.send(answer);
             }
           }
         });
